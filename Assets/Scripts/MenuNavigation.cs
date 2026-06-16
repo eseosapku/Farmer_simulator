@@ -10,6 +10,7 @@ public class MenuNavigation : MonoBehaviour
     public TMP_Dropdown location;
     public TMP_Dropdown crop;
     public TMP_Dropdown time;
+    public HUDManager hudManager;
 
     public string Province = "";
     public string Crop = "";
@@ -63,6 +64,14 @@ public class MenuNavigation : MonoBehaviour
         else
         {
             simDays = 30;
+        }
+        if (simulation != null)
+        {
+            simulation.SetActive(true);
+        }
+        if (hudManager != null)
+        {
+            hudManager.SimulationView();
         }
 
         Debug.Log("Simulating in: " + Province + " | Focus Crop: " + Crop + " | Time Limit: " + simDays + " Days.");
