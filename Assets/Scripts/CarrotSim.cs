@@ -50,7 +50,6 @@ public class CarrotSim : MonoBehaviour
         if (currentStage < growthStages.Length - 1)
         {
             currentStage++;
-            Debug.Log("Forced Growth Success! New stage is: " + currentStage);
         }
         UpdatePlantAppearance();
     }
@@ -93,7 +92,13 @@ public class CarrotSim : MonoBehaviour
         UpdatePlantAppearance();
     }
 
-    void EvaluatePlantHealth()
+    public void SetStage(int stage)
+    {
+        currentStage = Mathf.Clamp(stage, 0, growthStages.Length - 1);
+        UpdatePlantAppearance();
+    }
+
+    public void EvaluatePlantHealth()
     {
         if (moisture <= 10f || moisture >= 90f) plantHealth -= 15f;
         if (fertilizer <= 5f && compost <= 5f) plantHealth -= 10f;
@@ -107,7 +112,7 @@ public class CarrotSim : MonoBehaviour
         plantHealth = Mathf.Clamp(plantHealth, 0f, 100f);
     }
 
-    void UpdatePlantAppearance()
+    public void UpdatePlantAppearance()
     {
         for (int i = 0; i < growthStages.Length; i++)
         {
