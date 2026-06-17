@@ -12,6 +12,8 @@ public class MenuNavigation : MonoBehaviour
     public TMP_Dropdown time;
     public HUDManager hudManager;
     public PlayerController playerScript;
+    public GameObject setupPanel;
+
 
     public string Province = "";
     public string Crop = "";
@@ -43,6 +45,7 @@ public class MenuNavigation : MonoBehaviour
     }
     public void StartSimulation()
     {
+        if (setupPanel != null) setupPanel.SetActive(true);
         config.SetActive(false);
 
         int locationIndex = location.value;
