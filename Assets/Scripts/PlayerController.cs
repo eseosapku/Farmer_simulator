@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
@@ -104,6 +104,7 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(ray, out hit, 100f))
         {
             waterLine.SetPosition(1, hit.point);
+            Debug.Log("Raycast hit: " + hit.collider.gameObject.name);   // ← ADD THIS LINE
             CarrotSim carrot = hit.collider.GetComponentInParent<CarrotSim>();
             if (carrot != null)
             {

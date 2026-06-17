@@ -17,9 +17,11 @@ public class CarrotSim : MonoBehaviour
         UpdatePlantAppearance();
     }
 
+
     // Update is called once per frame
     void Update()
     {
+
     }
 
 
@@ -112,14 +114,7 @@ public class CarrotSim : MonoBehaviour
             if (growthStages[i] != null)
             {
                 growthStages[i].SetActive(i == currentStage);
-                Debug.Log("Stage " + i + " (" + growthStages[i].name + ") set to: " + (i == currentStage));
-            }
-            else
-            {
-                Debug.Log("Stage " + i + " is NULL!");
             }
         }
     }
-
-
 }
