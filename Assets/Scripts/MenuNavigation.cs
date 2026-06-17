@@ -11,11 +11,13 @@ public class MenuNavigation : MonoBehaviour
     public TMP_Dropdown crop;
     public TMP_Dropdown time;
     public HUDManager hudManager;
+    public PlayerController playerScript;
 
     public string Province = "";
     public string Crop = "";
     public int simDays = 10;
     public float climateDrySpeed = 1.0f;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -72,6 +74,12 @@ public class MenuNavigation : MonoBehaviour
         if (hudManager != null)
         {
             hudManager.SimulationView();
+        }
+
+        if (playerScript != null)
+        {
+            playerScript.isSimulating = true;
+            Debug.Log("Player Controller Activated! Controls are now live.");
         }
 
         Debug.Log("Simulating in: " + Province + " | Focus Crop: " + Crop + " | Time Limit: " + simDays + " Days.");

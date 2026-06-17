@@ -12,9 +12,9 @@ public class HUDManager : MonoBehaviour
     void Start()
     {
         manageCrops.SetActive(true);
-        manageAnimals.SetActive(false);
-        manageResources.SetActive(false);
-        bottomBar.SetActive(false);
+        manageAnimals.SetActive(true);
+        manageResources.SetActive(true);
+        bottomBar.SetActive(true);
     }
 
     // Update is called once per frame
@@ -29,8 +29,6 @@ public class HUDManager : MonoBehaviour
 
     public void SimulationView()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
         bottomBar.SetActive(false);
     }
 
@@ -39,14 +37,10 @@ public class HUDManager : MonoBehaviour
         if (bottomBar.activeSelf == false)
         {
             bottomBar.SetActive(true);
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
         }
         else
         {
             bottomBar.SetActive(false);
-            Cursor.lockState = CursorLockMode.Locked; 
-            Cursor.visible = false;
         }
     }
 
