@@ -9,6 +9,12 @@ public class PlayerController : MonoBehaviour
     public Transform waterTank;
     public bool isSimulating = false;
     public AudioSource waterAudio;
+    public GameObject fertilizer;
+    public Transform handPosition;
+    public AudioSource dropAudio;
+    public EconomyManager economy;
+
+
 
     private float targetRotationX;
     private float targetRotationY;
@@ -32,6 +38,10 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Keyboard.current.gKey.wasPressedThisFrame)
+        {
+            DropFertilizer();
+        }
         if (isSimulating == false)
         {
             Cursor.lockState = CursorLockMode.None;
@@ -128,5 +138,44 @@ public class PlayerController : MonoBehaviour
         if (waterLine == null) return;
         waterLine.SetPosition(0, Vector3.zero);
         waterLine.SetPosition(1, Vector3.zero);
+    }
+    void DropFertilizer()
+    {
+        if (fertilizer == null || mainCamera == null) return;
+
+        if (economy != null && !economy.TryUseFertilizer())
+        {
+            return; 
+        }
+
+        Vector3 spawnPos = (handPosition != null) ? handPosition.position : transform.position + transform.forward;
+        GameObject bag = Instantiate(fertilizer, spawnPos, Quaternion.identity);
+        bag.name = "Fertilizer_Bag";
+
+        Rigidbody rb = bag.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            Ray ray = mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+            RaycastHit hit;
+            Vector3 targetPoint;
+
+            if (Physics.Raycast(ray, out hit, 100f))
+            {
+                targetPoint = hit.point;
+            }
+            else
+            {
+                targetPoint = ray.origin + ray.direction * 15f;
+            }
+
+            Vector3 throwDirection = (targetPoint - spawnPos).normalized;
+            throwDirection.y += 0.3f; 
+
+            float throwForce = 8f;
+            rb.linearVelocity = throwDirection * throwForce;
+        }
+
+        if (dropAudio != null) dropAudio.Play();
+        Debug.Log("Fertilizer bag thrown toward target!");
     }
 }
