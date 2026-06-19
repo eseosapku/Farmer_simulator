@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
+
 public class PlayerController : MonoBehaviour
 {
     public float speed = 2f;
@@ -9,19 +10,26 @@ public class PlayerController : MonoBehaviour
     public Transform waterTank;
     public bool isSimulating = false;
     public AudioSource waterAudio;
-    public GameObject fertilizer;
+    public GameObject fertiliser;
     public Transform handPosition;
     public AudioSource dropAudio;
     public EconomyManager economy;
-
+    public GameObject compost;
+    public bool moveForward = false;
+    public bool moveBack = false;
+    public bool moveLeft = false;
+    public bool moveRight = false;
 
 
     private float targetRotationX;
     private float targetRotationY;
     private Camera mainCamera;
+
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        UnityEngine.InputSystem.EnhancedTouch.TouchSimulation.Enable();
         if (waterAudio != null)
         {
             waterAudio.Stop();
@@ -40,7 +48,13 @@ public class PlayerController : MonoBehaviour
     {
         if (Keyboard.current.gKey.wasPressedThisFrame)
         {
-            DropFertilizer();
+            if (economy != null && !economy.TryUseFertilizer()) return;
+            ThrowItem(fertiliser, "Fertilizer_Bag");
+        }
+
+        if (Keyboard.current.cKey.wasPressedThisFrame)
+        {
+            ThrowItem(compost, "Compost_Bag");
         }
         if (isSimulating == false)
         {
@@ -49,19 +63,19 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (Keyboard.current.wKey.isPressed || Keyboard.current.upArrowKey.isPressed)
+        if (Keyboard.current.wKey.isPressed || Keyboard.current.upArrowKey.isPressed || moveForward)
         {
             transform.Translate((-1f * speed * Time.deltaTime), 0f, 0f);
         }
-        if (Keyboard.current.sKey.isPressed || Keyboard.current.downArrowKey.isPressed)
+        if (Keyboard.current.sKey.isPressed || Keyboard.current.downArrowKey.isPressed || moveBack)
         {
             transform.Translate((1f * speed * Time.deltaTime), 0f, 0f);
         }
-        if (Keyboard.current.aKey.isPressed || Keyboard.current.leftArrowKey.isPressed)
+        if (Keyboard.current.aKey.isPressed || Keyboard.current.leftArrowKey.isPressed || moveLeft)
         {
             transform.Translate(0f, 0f, (-1f * speed * Time.deltaTime));
         }
-        if (Keyboard.current.dKey.isPressed || Keyboard.current.rightArrowKey.isPressed)
+        if (Keyboard.current.dKey.isPressed || Keyboard.current.rightArrowKey.isPressed || moveRight)
         {
             transform.Translate(0f, 0f, (1f * speed * Time.deltaTime));
         }
@@ -120,12 +134,6 @@ public class PlayerController : MonoBehaviour
             {
                 carrot.moisture = Mathf.Min(carrot.moisture + (25f * Time.deltaTime), 100f);
                 Debug.Log("Streaming water onto carrot safely via camera view tracking!");
-                if (carrot.moisture >= 100f)
-                {
-                    carrot.TestingForceGrowth();
-                    carrot.moisture = 30f;
-                    Debug.Log("Moisture maxed out! Forcing carrot patch to advance growth stage.");
-                }
             }
         }
         else
@@ -139,9 +147,9 @@ public class PlayerController : MonoBehaviour
         waterLine.SetPosition(0, Vector3.zero);
         waterLine.SetPosition(1, Vector3.zero);
     }
-    void DropFertilizer()
+    void DropFertiliser()
     {
-        if (fertilizer == null || mainCamera == null) return;
+        if (fertiliser == null || mainCamera == null) return;
 
         if (economy != null && !economy.TryUseFertilizer())
         {
@@ -149,8 +157,8 @@ public class PlayerController : MonoBehaviour
         }
 
         Vector3 spawnPos = (handPosition != null) ? handPosition.position : transform.position + transform.forward;
-        GameObject bag = Instantiate(fertilizer, spawnPos, Quaternion.identity);
-        bag.name = "Fertilizer_Bag";
+        GameObject bag = Instantiate(fertiliser, spawnPos, Quaternion.identity);
+        bag.name = "Fertiliser_Bag";
 
         Rigidbody rb = bag.GetComponent<Rigidbody>();
         if (rb != null)
@@ -176,6 +184,62 @@ public class PlayerController : MonoBehaviour
         }
 
         if (dropAudio != null) dropAudio.Play();
-        Debug.Log("Fertilizer bag thrown toward target!");
+        Debug.Log("Fertiliser bag thrown toward target!");
     }
+
+    void ThrowItem(GameObject prefab, string itemName)  
+    {
+        if (prefab == null || mainCamera == null) return;
+
+        Vector3 spawnPos = (handPosition != null) ? handPosition.position : transform.position + transform.forward;
+        GameObject item = Instantiate(prefab, spawnPos, Quaternion.identity);
+        item.name = itemName;
+
+        Rigidbody rb = item.GetComponent<Rigidbody>();
+        if (rb != null)
+        {
+            Ray ray = mainCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+            RaycastHit hit;
+            Vector3 target = Physics.Raycast(ray, out hit, 100f) ? hit.point : ray.origin + ray.direction * 15f;
+            Vector3 dir = (target - spawnPos).normalized;
+            dir.y += 0.3f;
+            rb.linearVelocity = dir * 8f;
+        }
+
+        if (dropAudio != null) dropAudio.Play();
+        Debug.Log(itemName + " thrown!");
+    }
+
+    public void ForwardDown() { moveForward = true; }
+    public void ForwardUp() { moveForward = false; }
+    public void BackDown() { moveBack = true; }
+    public void BackUp() { moveBack = false; }
+    public void LeftDown() { moveLeft = true; }
+    public void LeftUp() { moveLeft = false; }
+    public void RightDown() { moveRight = true; }
+    public void RightUp() { moveRight = false; }
+
+    public void ThrowFertilizerMobile()
+    {
+        if (economy != null && !economy.TryUseFertilizer()) return;
+        ThrowItem(fertiliser, "Fertilizer_Bag");
+    }
+
+    public void ThrowCompostMobile()
+    {
+        ThrowItem(compost, "Compost_Bag");
+    }
+
+    public void StartWaterMobile()
+    {
+        if (waterAudio != null) waterAudio.Play();
+    }
+
+    public void StopWaterMobile()
+    {
+        EraseLine();
+        if (waterAudio != null) waterAudio.Stop();
+    }
+
+
 }

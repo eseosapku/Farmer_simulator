@@ -10,6 +10,9 @@ public class MenuNavigation : MonoBehaviour
     public GameObject simulation;
     public GameObject setupPanel;
     public GameObject statsPanel;
+    public CarrotSim carrotSim;
+    public DayCycle dayCycle;
+
 
     public TMP_Dropdown location;
     public TMP_Dropdown crop;
@@ -93,12 +96,10 @@ public class MenuNavigation : MonoBehaviour
         if (modePicker != null) modePicker.SetActive(false);
         if (simulation != null) simulation.SetActive(true);
         if (statsPanel != null) statsPanel.SetActive(true);
-
         if (hudManager != null) hudManager.SimulationView();
-
         if (playerScript != null) playerScript.isSimulating = true;
-
-        Debug.Log("MANUAL MODE: Player controls active.");
+        if (dayCycle != null) dayCycle.manualModeActive = true;
+        if (carrotSim != null) carrotSim.province = Province;
     }
 
     public void StartSimulation()
