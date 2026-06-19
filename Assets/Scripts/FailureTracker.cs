@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class FailureTracker : MonoBehaviour
 {
@@ -29,10 +29,10 @@ public class FailureTracker : MonoBehaviour
         burnDays = (carrot.fertilizer >= 75f) ? burnDays + 1 : 0;
         chokeDays = (carrot.weedInfestation >= 50f && carrot.compost < 20f) ? chokeDays + 1 : 0;
 
-        if (droughtDays == 1) carrot.popupSystem?.Show("DROUGHT WARNING", "Moisture too low. Water within 3 days or crops wither.");
-        if (floodDays == 1) carrot.popupSystem?.Show("WATERLOGGED!", "Moisture too high. Rotting risk in 2 days.");
-        if (burnDays == 1) carrot.popupSystem?.Show("CHEMICAL BURN!", "Fertilizer above 75%. Keep at 30-60%.");
-        if (chokeDays == 1) carrot.popupSystem?.Show("WEEDS CHOKING", "Throw compost to suppress weeds.");
+        if (droughtDays == 1) carrot.popupSystem?.Show("DROUGHT WARNING", "Moisture too low.\n\n👉 ACTION: Click and hold on the field to water now, OR throw compost to help retain moisture.");
+        if (floodDays == 1) carrot.popupSystem?.Show("WATERLOGGED!", "Moisture too high.\n\n👉 ACTION: STOP watering for 2-3 days. Press Skip Day to let it dry out naturally.");
+        if (burnDays == 1) carrot.popupSystem?.Show("CHEMICAL BURN!", "Fertilizer above 75%.\n\n👉 ACTION: Stop throwing fertilizer bags. Throw COMPOST (press C) instead — it dilutes chemical buildup safely.");
+        if (chokeDays == 1) carrot.popupSystem?.Show("WEEDS CHOKING", "Weeds spreading fast.\n\n👉 ACTION: Press C to throw a Compost bag — it kills 15% of weeds instantly and strengthens your plant.");
 
         if (burnDays > 0) { carrot.plantHealth -= 15f; carrot.weedInfestation += 10f; }
         if (chokeDays > 0) carrot.plantHealth -= 10f;
@@ -41,6 +41,7 @@ public class FailureTracker : MonoBehaviour
         if (floodDays >= 2) Kill(carrot, "CROP ROTTED", "Two days waterlogged killed your carrots.");
         if (burnDays >= 3) Kill(carrot, "ROOTS DESTROYED", "Sustained chemical burn killed your crop.");
         if (chokeDays >= 4) Kill(carrot, "CHOKED OUT", "Weeds overran your crop.");
+
 
         if (optimalCount >= 3) carrot.plantHealth += 8f;
         else if (optimalCount <= 1) carrot.plantHealth -= 10f;

@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class CarrotSim : MonoBehaviour
@@ -41,9 +41,9 @@ public class CarrotSim : MonoBehaviour
             Destroy(other.gameObject);
 
             if (oldFert >= 60f)
-                popupSystem?.Show("TOO MUCH FERTILIZER", "Chemical burn risk! Optimal range is 30-60%.");
+                popupSystem?.Show("TOO MUCH FERTILIZER", "Chemical burn risk!\n\n ACTION: Stop adding fertilizer. Wait for it to drain below 60%, OR throw compost (C key) to balance the soil.");
             else
-                popupSystem?.Show("FERTILIZER ADDED", "+35%. Optimal range is 30-60%. Too much = chemical burn.");
+                popupSystem?.Show("FERTILIZER ADDED", "+35% Fertilizer.\n\n TIP: Optimal range is 30-60%. Stop here — adding more will burn roots.");
         }
         else if (other.gameObject.name.Contains("Compost"))
         {
@@ -52,7 +52,7 @@ public class CarrotSim : MonoBehaviour
             plantHealth = Mathf.Min(plantHealth + 5f, 100f);
             Destroy(other.gameObject);
 
-            popupSystem?.Show("COMPOST ADDED", "+40% Compost, -15% Weeds, +5% Health. No upper limit.");
+            popupSystem?.Show("COMPOST ADDED", "+40% Compost, -15% Weeds, +5% Health.\n\n TIP: Composts has no upper limit. Throw more if weeds keep growing or fertilizer is too high.");
         }
     }
 
