@@ -4,11 +4,11 @@ using UnityEngine;
 public class EconomyManager : MonoBehaviour
 {
     public int money = 5000;
-    public int fertilizerInventory = 3;
-    public int fertilizerCost = 500;
+    public int fertiliserInventory = 3;
+    public int fertiliserCost = 500;
     public int carrotSellPrice = 1500;
     public TMP_Text moneyText;
-    public TMP_Text fertilizerInventoryText;
+    public TMP_Text fertiliserInventoryText;
     public EduPopup popupSystem;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -22,29 +22,29 @@ public class EconomyManager : MonoBehaviour
         
     }
 
-    public void BuyFertilizer()
+    public void Buyfertiliser()
     {
-        if (money >= fertilizerCost)
+        if (money >= fertiliserCost)
         {
-            money -= fertilizerCost;
-            fertilizerInventory++;
+            money -= fertiliserCost;
+            fertiliserInventory++;
             UpdateUI();
-            Debug.Log("Bought fertilizer. Money: " + money + " | Inventory: " + fertilizerInventory);
+            Debug.Log("Bought fertiliser. Money: " + money + " | Inventory: " + fertiliserInventory);
         }
         else
         {
             if (popupSystem != null)
             {
-                popupSystem.Show("NOT ENOUGH MONEY", "You need " + fertilizerCost + " RWF to buy a fertilizer bag. Harvest your carrots first!");
+                popupSystem.Show("NOT ENOUGH MONEY", "You need " + fertiliserCost + " RWF to buy a fertiliser bag. Harvest your carrots first!");
             }
         }
     }
 
-    public bool TryUseFertilizer()
+    public bool TryUsefertiliser()
     {
-        if (fertilizerInventory > 0)
+        if (fertiliserInventory > 0)
         {
-            fertilizerInventory--;
+            fertiliserInventory--;
             UpdateUI();
             return true;
         }
@@ -52,7 +52,7 @@ public class EconomyManager : MonoBehaviour
         {
             if (popupSystem != null)
             {
-                popupSystem.Show("NO FERTILIZER", "You're out of fertilizer bags. Visit the market to buy more.");
+                popupSystem.Show("NO fertiliser", "You're out of fertiliser bags. Visit the market to buy more.");
             }
             return false;
         }
@@ -72,7 +72,7 @@ public class EconomyManager : MonoBehaviour
     void UpdateUI()
     {
         if (moneyText != null) moneyText.text = "Money: " + money + " RWF";
-        if (fertilizerInventoryText != null) fertilizerInventoryText.text = "Fertilizer Bags: " + fertilizerInventory;
+        if (fertiliserInventoryText != null) fertiliserInventoryText.text = "fertiliser Bags: " + fertiliserInventory;
     }
 }
 

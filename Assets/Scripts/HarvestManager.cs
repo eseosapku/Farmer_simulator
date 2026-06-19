@@ -26,7 +26,7 @@ public class HarvestManager : MonoBehaviour
             economy.HarvestCarrots(36);
             carrot.SetStage(0); 
             carrot.moisture = 50f;
-            carrot.fertilizer = 30f;
+            carrot.fertiliser = 30f;
             carrot.compost = 20f;
             carrot.weedInfestation = 0f;
             carrot.plantHealth = 100f;

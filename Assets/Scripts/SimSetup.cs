@@ -15,7 +15,7 @@ public class SimSetup : MonoBehaviour
     public Toggle compostToggle;
     public TMP_Text dayCounterText;
     public TMP_Text moistureText;
-    public TMP_Text fertilizerText;
+    public TMP_Text fertiliserText;
     public TMP_Text compostText;
     public TMP_Text weedText;
     public TMP_Text healthText;
@@ -45,7 +45,7 @@ public class SimSetup : MonoBehaviour
         {
             var c = simulator.carrot;
             if (moistureText != null) moistureText.text = "Moisture: " + c.moisture.ToString("0") + "%";
-            if (fertilizerText != null) fertilizerText.text = "Fertilizer: " + c.fertilizer.ToString("0") + "%";
+            if (fertiliserText != null) fertiliserText.text = "fertiliser: " + c.fertiliser.ToString("0") + "%";
             if (compostText != null) compostText.text = "Compost: " + c.compost.ToString("0") + "%";
             if (weedText != null) weedText.text = "Weeds: " + c.weedInfestation.ToString("0") + "%";
             if (healthText != null) healthText.text = "Health: " + c.plantHealth.ToString("0") + "%";
@@ -60,10 +60,10 @@ public class SimSetup : MonoBehaviour
         simulator.province = menuNavigation.Province;
         simulator.totalDays = menuNavigation.simDays;
         simulator.waterPerDay = waterSlider.value;
-        simulator.useChemicalFertilizer = chemicalToggle.isOn;
+        simulator.useChemicalfertiliser = chemicalToggle.isOn;
         simulator.useCompost = compostToggle.isOn;
 
-        Debug.Log("Starting simulation: " + simulator.province + " | " + simulator.totalDays + " days | Water: " + simulator.waterPerDay + " | Chemical: " + simulator.useChemicalFertilizer + " | Compost: " + simulator.useCompost);
+        Debug.Log("Starting simulation: " + simulator.province + " | " + simulator.totalDays + " days | Water: " + simulator.waterPerDay + " | Chemical: " + simulator.useChemicalfertiliser + " | Compost: " + simulator.useCompost);
 
         if (setupPanelRoot != null) setupPanelRoot.SetActive(false);
         if (statsPanel != null) statsPanel.SetActive(true);

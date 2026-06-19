@@ -26,13 +26,13 @@ public class FailureTracker : MonoBehaviour
 
         droughtDays = (carrot.moisture <= droughtLimit) ? droughtDays + 1 : 0;
         floodDays = (carrot.moisture >= floodLimit) ? floodDays + 1 : 0;
-        burnDays = (carrot.fertilizer >= 75f) ? burnDays + 1 : 0;
+        burnDays = (carrot.fertiliser >= 75f) ? burnDays + 1 : 0;
         chokeDays = (carrot.weedInfestation >= 50f && carrot.compost < 20f) ? chokeDays + 1 : 0;
 
-        if (droughtDays == 1) carrot.popupSystem?.Show("DROUGHT WARNING", "Moisture too low.\n\n👉 ACTION: Click and hold on the field to water now, OR throw compost to help retain moisture.");
-        if (floodDays == 1) carrot.popupSystem?.Show("WATERLOGGED!", "Moisture too high.\n\n👉 ACTION: STOP watering for 2-3 days. Press Skip Day to let it dry out naturally.");
-        if (burnDays == 1) carrot.popupSystem?.Show("CHEMICAL BURN!", "Fertilizer above 75%.\n\n👉 ACTION: Stop throwing fertilizer bags. Throw COMPOST (press C) instead — it dilutes chemical buildup safely.");
-        if (chokeDays == 1) carrot.popupSystem?.Show("WEEDS CHOKING", "Weeds spreading fast.\n\n👉 ACTION: Press C to throw a Compost bag — it kills 15% of weeds instantly and strengthens your plant.");
+        if (droughtDays == 1) carrot.popupSystem?.Show("DROUGHT WARNING", "Moisture too low.\n\n ACTION: Click and hold on the field to water now, OR throw compost to help retain moisture.");
+        if (floodDays == 1) carrot.popupSystem?.Show("WATERLOGGED!", "Moisture too high.\n\n ACTION: STOP watering for 2-3 days. Press Skip Day to let it dry out naturally.");
+        if (burnDays == 1) carrot.popupSystem?.Show("CHEMICAL BURN!", "fertiliser above 75%.\n\n ACTION: Stop throwing fertiliser bags. Throw COMPOST (press C) instead — it dilutes chemical buildup safely.");
+        if (chokeDays == 1) carrot.popupSystem?.Show("WEEDS CHOKING", "Weeds spreading fast.\n\n ACTION: Press C to throw a Compost bag — it kills 15% of weeds instantly and strengthens your plant.");
 
         if (burnDays > 0) { carrot.plantHealth -= 15f; carrot.weedInfestation += 10f; }
         if (chokeDays > 0) carrot.plantHealth -= 10f;

@@ -12,7 +12,7 @@ public class AutoSim : MonoBehaviour
     public float secondsPerDay = 2f;
 
     public float waterPerDay = 30f;
-    public bool useChemicalFertilizer = false;
+    public bool useChemicalfertiliser = false;
     public bool useCompost = false;
 
     public int currentDay = 0;
@@ -43,7 +43,7 @@ public class AutoSim : MonoBehaviour
         currentDay = 0;
         carrot.currentStage = 0;
         carrot.moisture = 50f;
-        carrot.fertilizer = useChemicalFertilizer ? 70f : 30f;
+        carrot.fertiliser = useChemicalfertiliser ? 70f : 30f;
         carrot.compost = useCompost ? 60f : 0f;
         carrot.weedInfestation = 0f;
         carrot.plantHealth = 100f;
@@ -81,14 +81,14 @@ public class AutoSim : MonoBehaviour
             carrot.moisture -= 25f;
         }
 
-        if (useChemicalFertilizer)
+        if (useChemicalfertiliser)
         {
-            carrot.fertilizer -= 5f;
+            carrot.fertiliser -= 5f;
             carrot.weedInfestation += 15f;
         }
         else
         {
-            carrot.fertilizer -= 10f;
+            carrot.fertiliser -= 10f;
         }
 
         if (useCompost)
@@ -105,7 +105,7 @@ public class AutoSim : MonoBehaviour
 
         ClampAllStats();
 
-        outcomes.CheckOutcomes(carrot, province, useChemicalFertilizer, useCompost, popupSystem);
+        outcomes.CheckOutcomes(carrot, province, useChemicalfertiliser, useCompost, popupSystem);
 
         if (carrot.plantHealth > 30f && carrot.currentStage < 6)
         {
@@ -119,7 +119,7 @@ public class AutoSim : MonoBehaviour
     void ClampAllStats()
     {
         carrot.moisture = Mathf.Clamp(carrot.moisture, 0f, 100f);
-        carrot.fertilizer = Mathf.Clamp(carrot.fertilizer, 0f, 100f);
+        carrot.fertiliser = Mathf.Clamp(carrot.fertiliser, 0f, 100f);
         carrot.compost = Mathf.Clamp(carrot.compost, 0f, 100f);
         carrot.weedInfestation = Mathf.Clamp(carrot.weedInfestation, 0f, 100f);
         carrot.plantHealth = Mathf.Clamp(carrot.plantHealth, 0f, 100f);
@@ -129,7 +129,7 @@ public class AutoSim : MonoBehaviour
     {
         if (carrot.currentStage == 6)
         {
-            popupSystem.Show("SUCCESS!", "Your carrots reached full maturity! Balanced water, fertilizer, and compost gave you a healthy harvest.");
+            popupSystem.Show("SUCCESS!", "Your carrots reached full maturity! Balanced water, fertiliser, and compost gave you a healthy harvest.");
         }
         else if (carrot.currentStage == 7)
         {

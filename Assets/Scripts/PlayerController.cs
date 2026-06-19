@@ -19,14 +19,15 @@ public class PlayerController : MonoBehaviour
     public bool moveBack = false;
     public bool moveLeft = false;
     public bool moveRight = false;
-
+    public GameObject waterParticlePrefab;
+    private GameObject activeWaterParticle;
 
     private float targetRotationX;
     private float targetRotationY;
     private Camera mainCamera;
 
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // Start is called once before the first execution of Update after the MonoBehaviour is createds
     void Start()
     {
         UnityEngine.InputSystem.EnhancedTouch.TouchSimulation.Enable();
@@ -48,8 +49,8 @@ public class PlayerController : MonoBehaviour
     {
         if (Keyboard.current.gKey.wasPressedThisFrame)
         {
-            if (economy != null && !economy.TryUseFertilizer()) return;
-            ThrowItem(fertiliser, "Fertilizer_Bag");
+            if (economy != null && !economy.TryUsefertiliser()) return;
+            ThrowItem(fertiliser, "fertiliser_Bag");
         }
 
         if (Keyboard.current.cKey.wasPressedThisFrame)
@@ -128,12 +129,23 @@ public class PlayerController : MonoBehaviour
         if (Physics.Raycast(ray, out hit, 100f))
         {
             waterLine.SetPosition(1, hit.point);
-            Debug.Log("Raycast hit: " + hit.collider.gameObject.name);   // ← ADD THIS LINE
             CarrotSim carrot = hit.collider.GetComponentInParent<CarrotSim>();
             if (carrot != null)
             {
                 carrot.moisture = Mathf.Min(carrot.moisture + (25f * Time.deltaTime), 100f);
-                Debug.Log("Streaming water onto carrot safely via camera view tracking!");
+            }
+
+            if (waterParticlePrefab != null)
+            {
+                if (activeWaterParticle == null)
+                {
+                    activeWaterParticle = Instantiate(waterParticlePrefab, hit.point, Quaternion.identity);
+                    activeWaterParticle.SetActive(true);
+                }
+                else
+                {
+                    activeWaterParticle.transform.position = hit.point;
+                }
             }
         }
         else
@@ -146,12 +158,17 @@ public class PlayerController : MonoBehaviour
         if (waterLine == null) return;
         waterLine.SetPosition(0, Vector3.zero);
         waterLine.SetPosition(1, Vector3.zero);
+        if (activeWaterParticle != null)
+        {
+            Destroy(activeWaterParticle);
+            activeWaterParticle = null;
+        }
     }
     void DropFertiliser()
     {
         if (fertiliser == null || mainCamera == null) return;
 
-        if (economy != null && !economy.TryUseFertilizer())
+        if (economy != null && !economy.TryUsefertiliser())
         {
             return; 
         }
@@ -219,10 +236,10 @@ public class PlayerController : MonoBehaviour
     public void RightDown() { moveRight = true; }
     public void RightUp() { moveRight = false; }
 
-    public void ThrowFertilizerMobile()
+    public void ThrowfertiliserMobile()
     {
-        if (economy != null && !economy.TryUseFertilizer()) return;
-        ThrowItem(fertiliser, "Fertilizer_Bag");
+        if (economy != null && !economy.TryUsefertiliser()) return;
+        ThrowItem(fertiliser, "fertiliser_Bag");
     }
 
     public void ThrowCompostMobile()

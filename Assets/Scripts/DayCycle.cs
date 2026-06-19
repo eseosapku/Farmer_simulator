@@ -42,14 +42,14 @@ public class DayCycle : MonoBehaviour
         if (carrot.province == "Northern Province")
         {
             carrot.moisture -= 6f;
-            carrot.fertilizer -= 5f;
+            carrot.fertiliser -= 5f;
             carrot.compost -= 3f;
             carrot.weedInfestation += Random.Range(4f, 8f);
         }
         else
         {
             carrot.moisture -= 14f;
-            carrot.fertilizer -= 8f;
+            carrot.fertiliser -= 8f;
             carrot.compost -= 5f;
             carrot.weedInfestation += Random.Range(3f, 6f);
         }
@@ -60,7 +60,7 @@ public class DayCycle : MonoBehaviour
         int count = 0;
         float upperWater = (carrot.province == "Northern Province") ? 70f : 75f;
         if (carrot.moisture >= 40f && carrot.moisture <= upperWater) count++;
-        if (carrot.fertilizer >= 30f && carrot.fertilizer <= 60f) count++;
+        if (carrot.fertiliser >= 30f && carrot.fertiliser <= 60f) count++;
         if (carrot.compost >= 30f) count++;
         if (carrot.weedInfestation < 30f) count++;
         return count;
