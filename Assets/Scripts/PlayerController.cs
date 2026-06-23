@@ -100,7 +100,7 @@ public class PlayerController : MonoBehaviour
 
             if (waterAudio != null)
             {
-                waterAudio.Stop(); // Kills the audio source instantly on release frame!
+                waterAudio.Stop(); 
             }
         }
 
@@ -109,13 +109,24 @@ public class PlayerController : MonoBehaviour
 
     void HandleRotation()
     {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        Vector2 mouseMovement = Mouse.current.delta.ReadValue();
-        transform.Rotate(Vector3.up * mouseMovement.x * rotationSpeed);
+        Vector2 mouseDelta;
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+        if (Mouse.current.rightButton.isPressed)
+        {
+            mouseDelta = Mouse.current.delta.ReadValue();
+        }
+        else
+        {
+            return;
+        }
+#else
+        mouseDelta = Mouse.current.delta.ReadValue();
+#endif
+        transform.Rotate(Vector3.up * mouseDelta.x * rotationSpeed);
         if (mainCamera != null)
         {
-            mainCamera.transform.Rotate(Vector3.left * mouseMovement.y * rotationSpeed);
+            mainCamera.transform.Rotate(Vector3.left * mouseDelta.y * rotationSpeed);
         }
     }
 
